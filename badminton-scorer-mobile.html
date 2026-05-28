@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#050814">
+  <title>羽球計分器</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; min-height: 100%; background: #050814; color: #fff; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      overflow: hidden;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: #050814;
+    }
+    .setup {
+      width: min(100%, 560px);
+      margin: 0 auto;
+      padding: max(22px, env(safe-area-inset-top)) 18px max(24px, env(safe-area-inset-bottom));
+      overflow: auto;
+    }
+    .title { text-align: center; margin: 4px 0 26px; }
+    .title-icon { font-size: 42px; line-height: 1; }
+    h1 { margin: 8px 0 0; font-size: 28px; letter-spacing: 4px; }
+    .label {
+      display: block;
+      margin: 22px 0 9px;
+      color: #8aa0bd;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .seg, .formats, .starter-row, .actions { display: grid; gap: 10px; }
+    .seg, .starter-row, .actions { grid-template-columns: 1fr 1fr; }
+    .formats { grid-template-columns: 1fr 1fr; }
+    .btn, .format-btn, .input {
+      border: 1px solid #1a2940;
+      border-radius: 10px;
+      background: #0a1220;
+      color: #d8e6f8;
+    }
+    .btn, .format-btn { min-height: 46px; padding: 11px 10px; font-weight: 800; }
+    .btn.active { background: #1d4ed8; border-color: #60a5fa; color: #fff; }
+    .format-btn { color: #9db0cb; line-height: 1.35; }
+    .format-btn.active { background: #063b22; border-color: #10b981; color: #7bf0bd; }
+    .name-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .team-title { margin-bottom: 8px; font-size: 12px; font-weight: 900; letter-spacing: 1.5px; }
+    .team-left { color: #60a5fa; }
+    .team-right { color: #fb923c; }
+    .input {
+      width: 100%;
+      min-height: 44px;
+      margin-bottom: 8px;
+      padding: 10px 12px;
+      outline: none;
+      background: #07101e;
+    }
+    .input:focus { border-color: #60a5fa; }
+    .start-btn {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 26px;
+      border: 0;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #047857, #34d399);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 950;
+      letter-spacing: 3px;
+    }
+    .serve-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 22px;
+      text-align: center;
+    }
+    .serve-title { font-size: 26px; font-weight: 950; letter-spacing: 2px; }
+    .starter-row { width: min(100%, 480px); }
+    .starter {
+      min-height: 120px;
+      border: 0;
+      border-radius: 18px;
+      padding: 18px 12px;
+      color: #fff;
+      font-weight: 900;
+    }
+    .starter.left { background: linear-gradient(145deg, #1a3a7a, #3b82f6); }
+    .starter.right { background: linear-gradient(145deg, #7c1f06, #f97316); }
+    .starter small { display: block; margin-top: 8px; opacity: .8; }
+    .top {
+      min-height: 42px;
+      padding: max(8px, env(safe-area-inset-top)) 14px 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #0e1728;
+      color: #9db0cb;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .badge {
+      border-radius: 999px;
+      padding: 5px 11px;
+      background: #5b21b6;
+      color: #fff;
+      font-size: 11px;
+      letter-spacing: 1.5px;
+    }
+    .court { flex: 1; display: flex; min-height: 0; }
+    .panel {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      padding: 14px 8px;
+      transition: filter .15s, background .2s;
+    }
+    .panel:active { filter: brightness(1.35); }
+    .panel.left { background: linear-gradient(158deg, #080d18, #102247); }
+    .panel.right { background: linear-gradient(158deg, #160600, #351005); }
+    .panel.left.serving { background: linear-gradient(158deg, #102040, #1a3a7a 50%, #1d4ed8); }
+    .panel.right.serving { background: linear-gradient(158deg, #3d0f00, #7c2d12 50%, #c2410c); }
+    .server-mark {
+      position: absolute;
+      top: 14px;
+      font-size: 24px;
+    }
+    .panel.left .server-mark { left: 14px; }
+    .panel.right .server-mark { right: 14px; }
+    .player-name {
+      max-width: 92%;
+      min-height: 1.5em;
+      color: #d8e6f8;
+      font-size: clamp(13px, 3.8vw, 19px);
+      font-weight: 850;
+      line-height: 1.35;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .score {
+      font-family: Impact, "Arial Narrow", system-ui, sans-serif;
+      font-size: clamp(84px, 31vw, 220px);
+      line-height: .88;
+      text-shadow: 0 4px 24px rgba(0,0,0,.45);
+    }
+    .sets { display: flex; gap: 8px; min-height: 12px; }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      border: 1px solid #25344b;
+      background: #0f1a28;
+    }
+    .dot.left-on { border-color: #93c5fd; background: #3b82f6; box-shadow: 0 0 7px #3b82f6; }
+    .dot.right-on { border-color: #fdba74; background: #f97316; box-shadow: 0 0 7px #f97316; }
+    .net {
+      width: 4px;
+      flex: 0 0 4px;
+      background: repeating-linear-gradient(to bottom, #334155 0, #334155 7px, #050814 7px, #050814 14px);
+    }
+    .bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 9px;
+      padding: 10px 12px max(10px, env(safe-area-inset-bottom));
+      border-top: 1px solid #0e1728;
+    }
+    .control {
+      min-height: 44px;
+      border: 1px solid #1a2940;
+      border-radius: 10px;
+      background: #0a1220;
+      color: #a9bbd3;
+      font-weight: 850;
+    }
+    .control:disabled { opacity: .35; }
+    .overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(0, 0, 0, .9);
+    }
+    .dialog {
+      width: min(100%, 360px);
+      border: 1px solid #24344c;
+      border-radius: 22px;
+      background: #08111f;
+      padding: 26px 22px;
+      text-align: center;
+      box-shadow: 0 22px 70px rgba(0,0,0,.45);
+    }
+    .dialog h2 { margin: 0 0 8px; font-size: 24px; }
+    .dialog p { margin: 0 0 18px; color: #a9bbd3; line-height: 1.55; }
+    .dialog-score {
+      margin: 10px 0 18px;
+      font-family: Impact, "Arial Narrow", system-ui, sans-serif;
+      font-size: 58px;
+      line-height: 1;
+    }
+    .dialog .actions { margin-top: 14px; }
+    .dialog-btn {
+      min-height: 46px;
+      border: 0;
+      border-radius: 11px;
+      color: #fff;
+      font-weight: 950;
+    }
+    .dialog-btn.primary { background: linear-gradient(135deg, #047857, #34d399); }
+    .dialog-btn.secondary { background: #132033; color: #c7d6eb; }
+    .winner {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 28px 22px;
+      text-align: center;
+      overflow: auto;
+    }
+    .trophy { font-size: 70px; }
+    .winner-label { color: #8aa0bd; font-size: 12px; font-weight: 850; letter-spacing: 3px; }
+    .winner-name { font-size: 30px; font-weight: 950; line-height: 1.25; }
+    .winner-score {
+      font-family: Impact, "Arial Narrow", system-ui, sans-serif;
+      font-size: 70px;
+      line-height: 1;
+    }
+    .history { color: #a9bbd3; line-height: 1.8; }
+    @media (orientation: portrait) {
+      .court { min-height: 58vh; }
+      .bottom { grid-template-columns: 1fr 1fr; }
+      .bottom .control:last-child { grid-column: 1 / -1; }
+    }
+    @media (max-width: 390px) {
+      .formats, .name-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+      .serve-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main id="app" class="app"></main>
+
+  <script>
+    const FORMATS = [
+      { id: "s15", label: "單局 15 分", sets: 1, points: 15, changeAt: 8 },
+      { id: "s21", label: "單局 21 分", sets: 1, points: 21, changeAt: 11 },
+      { id: "s25", label: "單局 25 分", sets: 1, points: 25, changeAt: 13 },
+      { id: "b15", label: "三局兩勝 15 分", sets: 3, points: 15, changeAt: 8 },
+      { id: "b21", label: "三局兩勝 21 分", sets: 3, points: 21, changeAt: 11 },
+      { id: "b25", label: "三局兩勝 25 分", sets: 3, points: 25, changeAt: 13 }
+    ];
+
+    const app = document.getElementById("app");
+    const state = {
+      phase: "setup",
+      doubles: false,
+      formatId: "s21",
+      names: { la: "", lb: "", ra: "", rb: "" },
+      game: null,
+      history: [],
+      pendingChange: false
+    };
+
+    const format = () => FORMATS.find(f => f.id === state.formatId);
+    const sideName = side => {
+      const n = state.names;
+      if (side === "left") return state.doubles ? `${n.la || "左方 A"} / ${n.lb || "左方 B"}` : (n.la || "左方選手");
+      return state.doubles ? `${n.ra || "右方 A"} / ${n.rb || "右方 B"}` : (n.ra || "右方選手");
+    };
+    const winSide = (ls, rs, points) => {
+      if (ls >= points && ls - rs >= 2) return "left";
+      if (rs >= points && rs - ls >= 2) return "right";
+      return null;
+    };
+    const snapshot = () => JSON.parse(JSON.stringify({
+      phase: state.phase,
+      doubles: state.doubles,
+      formatId: state.formatId,
+      names: state.names,
+      game: state.game,
+      pendingChange: state.pendingChange
+    }));
+    const restore = snap => {
+      state.phase = snap.phase;
+      state.doubles = snap.doubles;
+      state.formatId = snap.formatId;
+      state.names = snap.names;
+      state.game = snap.game;
+      state.pendingChange = snap.pendingChange;
+      render();
+    };
+    const pushHistory = () => state.history.push(snapshot());
+
+    function startGame(serving) {
+      state.history = [];
+      state.pendingChange = false;
+      state.game = {
+        ls: 0,
+        rs: 0,
+        lsets: 0,
+        rsets: 0,
+        setNum: 1,
+        serving,
+        setHistory: [],
+        changedSets: {},
+        lastWinner: null
+      };
+      state.phase = "game";
+      render();
+    }
+
+    function score(side) {
+      if (!state.game || state.phase !== "game" || state.pendingChange) return;
+      pushHistory();
+      const g = state.game;
+      if (side === "left") g.ls += 1;
+      if (side === "right") g.rs += 1;
+      g.serving = side;
+
+      const f = format();
+      const winner = winSide(g.ls, g.rs, f.points);
+      if (winner) {
+        if (winner === "left") g.lsets += 1;
+        if (winner === "right") g.rsets += 1;
+        g.lastWinner = winner;
+        g.setHistory.push({ ls: g.ls, rs: g.rs });
+        const needSets = Math.ceil(f.sets / 2);
+        state.phase = (g.lsets >= needSets || g.rsets >= needSets) ? "match_over" : "set_over";
+      } else if (!g.changedSets[g.setNum] && (g.ls === f.changeAt || g.rs === f.changeAt)) {
+        state.pendingChange = true;
+        g.changedSets[g.setNum] = true;
+      }
+      render();
+    }
+
+    function swapCourt() {
+      pushHistory();
+      const n = state.names;
+      state.names = { la: n.ra, lb: n.rb, ra: n.la, rb: n.lb };
+      const g = state.game;
+      [g.ls, g.rs] = [g.rs, g.ls];
+      [g.lsets, g.rsets] = [g.rsets, g.lsets];
+      g.serving = g.serving === "left" ? "right" : "left";
+      state.pendingChange = false;
+      render();
+    }
+
+    function keepCourt() {
+      pushHistory();
+      state.pendingChange = false;
+      render();
+    }
+
+    function undo() {
+      const prev = state.history.pop();
+      if (!prev) return;
+      restore(prev);
+    }
+
+    function nextSet() {
+      pushHistory();
+      const g = state.game;
+      g.ls = 0;
+      g.rs = 0;
+      g.setNum += 1;
+      g.serving = g.lastWinner;
+      g.lastWinner = null;
+      state.pendingChange = false;
+      state.phase = "game";
+      render();
+    }
+
+    function reset() {
+      state.phase = "setup";
+      state.game = null;
+      state.history = [];
+      state.pendingChange = false;
+      render();
+    }
+
+    function setName(key, value) {
+      state.names[key] = value;
+    }
+
+    function setupScreen() {
+      app.innerHTML = `
+        <section class="setup">
+          <div class="title">
+            <div class="title-icon">🏸</div>
+            <h1>羽球計分器</h1>
+          </div>
+
+          <span class="label">比賽類型</span>
+          <div class="seg">
+            <button class="btn ${!state.doubles ? "active" : ""}" data-action="single">單打</button>
+            <button class="btn ${state.doubles ? "active" : ""}" data-action="double">雙打</button>
+          </div>
+
+          <span class="label">選手姓名</span>
+          <div class="name-grid">
+            <div>
+              <div class="team-title team-left">左方</div>
+              <input class="input" data-name="la" placeholder="選手 A" value="${escapeHtml(state.names.la)}">
+              ${state.doubles ? `<input class="input" data-name="lb" placeholder="選手 B" value="${escapeHtml(state.names.lb)}">` : ""}
+            </div>
+            <div>
+              <div class="team-title team-right">右方</div>
+              <input class="input" data-name="ra" placeholder="選手 C" value="${escapeHtml(state.names.ra)}">
+              ${state.doubles ? `<input class="input" data-name="rb" placeholder="選手 D" value="${escapeHtml(state.names.rb)}">` : ""}
+            </div>
+          </div>
+
+          <span class="label">賽制</span>
+          <div class="formats">
+            ${FORMATS.map(f => `<button class="format-btn ${state.formatId === f.id ? "active" : ""}" data-format="${f.id}">${f.label}</button>`).join("")}
+          </div>
+
+          <button class="start-btn" data-action="chooseServe">開始比賽</button>
+        </section>
+      `;
+    }
+
+    function serveScreen() {
+      app.innerHTML = `
+        <section class="serve-screen">
+          <div class="serve-title">選擇先發球方</div>
+          <div class="starter-row">
+            <button class="starter left" data-serve="left">
+              ${escapeHtml(sideName("left"))}
+              <small>左方先發</small>
+            </button>
+            <button class="starter right" data-serve="right">
+              ${escapeHtml(sideName("right"))}
+              <small>右方先發</small>
+            </button>
+          </div>
+          <button class="control" data-action="backSetup">返回設定</button>
+        </section>
+      `;
+    }
+
+    function gameScreen() {
+      const g = state.game;
+      const f = format();
+      const toWin = Math.ceil(f.sets / 2);
+      const deuce = g.ls >= f.points - 1 && g.rs >= f.points - 1 && g.ls === g.rs;
+      app.innerHTML = `
+        <div class="top">
+          <span>${f.sets > 1 ? `第 ${g.setNum} 局　局數 ${g.lsets}：${g.rsets}` : f.label}</span>
+          ${deuce ? `<span class="badge">DEUCE</span>` : ""}
+        </div>
+        <section class="court">
+          ${panel("left", g, toWin)}
+          <div class="net"></div>
+          ${panel("right", g, toWin)}
+        </section>
+        <div class="bottom">
+          <button class="control" data-action="undo" ${state.history.length ? "" : "disabled"}>復原</button>
+          <button class="control" data-action="manualSwap">手動換場</button>
+          <button class="control" data-action="reset">重新設定</button>
+        </div>
+        ${state.pendingChange ? changeDialog() : ""}
+        ${state.phase === "set_over" ? setOverDialog() : ""}
+      `;
+    }
+
+    function panel(side, g, toWin) {
+      const scoreValue = side === "left" ? g.ls : g.rs;
+      const sets = side === "left" ? g.lsets : g.rsets;
+      const dotClass = side === "left" ? "left-on" : "right-on";
+      return `
+        <button class="panel ${side} ${g.serving === side ? "serving" : ""}" data-score="${side}">
+          ${g.serving === side ? `<div class="server-mark">🏸</div>` : ""}
+          <div class="player-name">${escapeHtml(sideName(side))}</div>
+          <div class="score">${scoreValue}</div>
+          <div class="sets">
+            ${Array.from({ length: toWin }).map((_, i) => `<span class="dot ${i < sets ? dotClass : ""}"></span>`).join("")}
+          </div>
+        </button>
+      `;
+    }
+
+    function changeDialog() {
+      const f = format();
+      return `
+        <div class="overlay">
+          <div class="dialog">
+            <h2>是否換場地？</h2>
+            <p>${f.points} 分賽制已先到 ${f.changeAt} 分。若換場，左右方位會互換並繼續計分。</p>
+            <div class="dialog-score">${state.game.ls}：${state.game.rs}</div>
+            <div class="actions">
+              <button class="dialog-btn primary" data-action="swapCourt">換場</button>
+              <button class="dialog-btn secondary" data-action="keepCourt">不換</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function setOverDialog() {
+      const g = state.game;
+      const winner = g.lastWinner;
+      return `
+        <div class="overlay">
+          <div class="dialog">
+            <h2 style="color:${winner === "left" ? "#60a5fa" : "#fb923c"}">${escapeHtml(sideName(winner))}</h2>
+            <p>拿下第 ${g.setNum} 局</p>
+            <div class="dialog-score">${g.ls}：${g.rs}</div>
+            <p>目前局數 ${g.lsets}：${g.rsets}</p>
+            <button class="dialog-btn primary" style="width:100%" data-action="nextSet">下一局</button>
+            ${state.history.length ? `<button class="control" style="width:100%;margin-top:10px" data-action="undo">復原</button>` : ""}
+          </div>
+        </div>
+      `;
+    }
+
+    function matchOverScreen() {
+      const g = state.game;
+      const winner = g.lsets > g.rsets ? "left" : "right";
+      app.innerHTML = `
+        <section class="winner">
+          <div class="trophy">🏆</div>
+          <div class="winner-label">比賽結束</div>
+          <div class="winner-name" style="color:${winner === "left" ? "#60a5fa" : "#fb923c"}">${escapeHtml(sideName(winner))}</div>
+          <div>獲勝</div>
+          <div class="winner-score">${g.lsets}：${g.rsets}</div>
+          <div class="history">
+            ${g.setHistory.map((s, i) => `<div>第 ${i + 1} 局：${s.ls} - ${s.rs}</div>`).join("")}
+          </div>
+          ${state.history.length ? `<button class="control" style="width:min(100%,280px)" data-action="undo">復原</button>` : ""}
+          <button class="start-btn" style="width:min(100%,280px);margin-top:6px" data-action="reset">再來一場</button>
+        </section>
+      `;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, ch => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      })[ch]);
+    }
+
+    function render() {
+      if (state.phase === "setup") setupScreen();
+      if (state.phase === "serve") serveScreen();
+      if (state.phase === "game" || state.phase === "set_over") gameScreen();
+      if (state.phase === "match_over") matchOverScreen();
+    }
+
+    app.addEventListener("input", event => {
+      const key = event.target.dataset.name;
+      if (key) setName(key, event.target.value);
+    });
+
+    app.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button || button.disabled) return;
+      const action = button.dataset.action;
+      const scoreSide = button.dataset.score;
+      const serveSide = button.dataset.serve;
+      const fmt = button.dataset.format;
+
+      if (scoreSide) score(scoreSide);
+      if (serveSide) startGame(serveSide);
+      if (fmt) { state.formatId = fmt; render(); }
+      if (action === "single") { state.doubles = false; render(); }
+      if (action === "double") { state.doubles = true; render(); }
+      if (action === "chooseServe") { state.phase = "serve"; render(); }
+      if (action === "backSetup") { state.phase = "setup"; render(); }
+      if (action === "undo") undo();
+      if (action === "manualSwap") swapCourt();
+      if (action === "swapCourt") swapCourt();
+      if (action === "keepCourt") keepCourt();
+      if (action === "nextSet") nextSet();
+      if (action === "reset") reset();
+    });
+
+    render();
+  </script>
+</body>
+</html>
