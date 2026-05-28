@@ -42,7 +42,22 @@
     }
     .seg, .formats, .starter-row, .actions { display: grid; gap: 10px; }
     .seg, .starter-row, .actions { grid-template-columns: 1fr 1fr; }
-    .formats { grid-template-columns: 1fr 1fr; }
+    .formats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .formats-col { display: flex; flex-direction: column; gap: 8px; }
+    .formats-col-title {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-align: center;
+      margin-bottom: 2px;
+      padding: 4px 0;
+    }
+    .formats-col-title.single { color: #60a5fa; }
+    .formats-col-title.best3  { color: #34d399; }
     .btn, .format-btn, .input {
       border: 1px solid #1a2940;
       border-radius: 10px;
@@ -262,14 +277,142 @@
       .bottom .control:last-child { grid-column: 1 / -1; }
     }
     @media (max-width: 390px) {
-      .formats, .name-grid { grid-template-columns: 1fr; }
+      .name-grid { grid-template-columns: 1fr; }
       h1 { font-size: 24px; }
       .serve-title { font-size: 22px; }
+    }
+
+    /* ═══════════════════════════════════
+       CROWD ANIMATIONS
+    ═══════════════════════════════════ */
+    .crowd {
+      position: absolute;
+      bottom: 10px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 2px;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .cp {
+      display: inline-block;
+      font-size: clamp(14px, 3.4vw, 21px);
+      line-height: 1;
+      animation: crowd-sway 2.8s ease-in-out infinite;
+      transform-origin: bottom center;
+      will-change: transform;
+    }
+    .cp:nth-child(1) { animation-delay: 0.00s; }
+    .cp:nth-child(2) { animation-delay: 0.48s; }
+    .cp:nth-child(3) { animation-delay: 0.96s; }
+    .cp:nth-child(4) { animation-delay: 0.24s; }
+    .cp:nth-child(5) { animation-delay: 0.72s; }
+    @keyframes crowd-sway {
+      0%,100% { transform: translateY(0) rotate(-5deg) scale(1); }
+      50%      { transform: translateY(-5px) rotate(5deg) scale(1.08); }
+    }
+    /* Cheer burst – added by JS after each point */
+    .panel.cheering .cp {
+      animation: crowd-cheer .38s ease-in-out infinite !important;
+    }
+    .panel.cheering .cp:nth-child(1) { animation-delay: 0.000s !important; }
+    .panel.cheering .cp:nth-child(2) { animation-delay: 0.076s !important; }
+    .panel.cheering .cp:nth-child(3) { animation-delay: 0.152s !important; }
+    .panel.cheering .cp:nth-child(4) { animation-delay: 0.038s !important; }
+    .panel.cheering .cp:nth-child(5) { animation-delay: 0.114s !important; }
+    @keyframes crowd-cheer {
+      0%,100% { transform: translateY(0) scale(1) rotate(0); }
+      35%      { transform: translateY(-18px) scale(1.55) rotate(-12deg); }
+      65%      { transform: translateY(-10px) scale(1.25) rotate(10deg); }
+    }
+    /* Score flash */
+    .panel.scored { animation: score-flash .28s ease-out; }
+    @keyframes score-flash {
+      0%   { filter: brightness(3); }
+      100% { filter: brightness(1); }
+    }
+    /* Floating +1 label */
+    .point-pop {
+      position: absolute;
+      font-size: 28px;
+      font-weight: 950;
+      color: #fff;
+      text-shadow: 0 0 12px rgba(255,255,255,.7);
+      pointer-events: none;
+      animation: pt-pop .9s ease-out forwards;
+      z-index: 5;
+    }
+    @keyframes pt-pop {
+      0%   { opacity: 1; transform: translateY(0) scale(1); }
+      60%  { opacity: 1; transform: translateY(-55px) scale(1.3); }
+      100% { opacity: 0; transform: translateY(-90px) scale(.8); }
+    }
+
+    /* ═══════════════════════════════════
+       VICTORY SCREEN
+    ═══════════════════════════════════ */
+    /* Whole figure bounce */
+    .vf-body {
+      animation: vf-bounce .68s ease-in-out infinite;
+    }
+    @keyframes vf-bounce {
+      0%,100% { transform: translateY(0); }
+      40%      { transform: translateY(-12px); }
+    }
+    /* Arm pump – uses fill-box so transform-origin is relative to element bbox */
+    .vf-arm-l {
+      transform-box: fill-box;
+      transform-origin: right bottom;
+      animation: vf-pump-l .68s ease-in-out infinite;
+    }
+    @keyframes vf-pump-l {
+      0%,100% { transform: rotate(0deg); }
+      40%      { transform: rotate(-10deg); }
+    }
+    .vf-arm-r {
+      transform-box: fill-box;
+      transform-origin: left bottom;
+      animation: vf-pump-r .68s ease-in-out infinite;
+    }
+    @keyframes vf-pump-r {
+      0%,100% { transform: rotate(0deg); }
+      40%      { transform: rotate(10deg); }
+    }
+    /* Fist glow pulse */
+    .vf-fist {
+      animation: vf-fist-glow 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes vf-fist-glow {
+      from { filter: drop-shadow(0 0 0px currentColor); }
+      to   { filter: drop-shadow(0 0 8px currentColor); }
+    }
+    /* Sparkles twinkling */
+    .vf-spark { animation: vf-twinkle 1.2s ease-in-out infinite alternate; }
+    .vf-spark:nth-child(2) { animation-delay: -.4s; }
+    .vf-spark:nth-child(3) { animation-delay: -.8s; }
+    @keyframes vf-twinkle {
+      from { opacity: .2; transform: scale(.7); }
+      to   { opacity: 1;  transform: scale(1.2); }
+    }
+    /* Winner name zoom-in */
+    .winner-name { animation: win-zoom .5s cubic-bezier(.17,.67,.35,1.4) both; }
+    @keyframes win-zoom {
+      from { transform: scale(.4); opacity: 0; }
+      to   { transform: scale(1);  opacity: 1; }
+    }
+    /* Confetti canvas */
+    #confetti-canvas {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      width: 100%; height: 100%;
     }
   </style>
 </head>
 <body>
   <main id="app" class="app"></main>
+  <canvas id="confetti-canvas"></canvas>
 
   <script>
     const FORMATS = [
@@ -362,6 +505,26 @@
         g.changedSets[g.setNum] = true;
       }
       render();
+
+      // Animations after render
+      const panel = document.querySelector(`.panel.${side}`);
+      if (panel) {
+        // Flash
+        panel.classList.remove("scored");
+        void panel.offsetWidth;
+        panel.classList.add("scored");
+        setTimeout(() => panel.classList.remove("scored"), 300);
+        // Crowd cheer
+        panel.classList.add("cheering");
+        setTimeout(() => panel.classList.remove("cheering"), 1400);
+        // +1 popup
+        const pop = document.createElement("div");
+        pop.className = "point-pop";
+        pop.textContent = "+1";
+        pop.style.cssText = `top:35%;${side==="left"?"left":"right"}:20%`;
+        panel.appendChild(pop);
+        setTimeout(() => pop.remove(), 950);
+      }
     }
 
     function swapCourt() {
@@ -402,6 +565,7 @@
     }
 
     function reset() {
+      stopConfetti();
       state.phase = "setup";
       state.game = null;
       state.history = [];
@@ -443,7 +607,14 @@
 
           <span class="label">賽制</span>
           <div class="formats">
-            ${FORMATS.map(f => `<button class="format-btn ${state.formatId === f.id ? "active" : ""}" data-format="${f.id}">${f.label}</button>`).join("")}
+            <div class="formats-col">
+              <div class="formats-col-title single">單局</div>
+              ${FORMATS.filter(f => f.sets === 1).map(f => `<button class="format-btn ${state.formatId === f.id ? "active" : ""}" data-format="${f.id}">${f.points} 分</button>`).join("")}
+            </div>
+            <div class="formats-col">
+              <div class="formats-col-title best3">三局兩勝</div>
+              ${FORMATS.filter(f => f.sets === 3).map(f => `<button class="format-btn ${state.formatId === f.id ? "active" : ""}" data-format="${f.id}">${f.points} 分</button>`).join("")}
+            </div>
           </div>
 
           <button class="start-btn" data-action="chooseServe">開始比賽</button>
@@ -499,6 +670,8 @@
       const scoreValue = side === "left" ? g.ls : g.rs;
       const sets = side === "left" ? g.lsets : g.rsets;
       const dotClass = side === "left" ? "left-on" : "right-on";
+      const crowdEmoji = ["🙋‍♂️","🙌","🙋‍♀️","👏","🙋"];
+      const crowd = `<div class="crowd" aria-hidden="true">${crowdEmoji.map(e => `<span class="cp">${e}</span>`).join("")}</div>`;
       return `
         <button class="panel ${side} ${g.serving === side ? "serving" : ""}" data-score="${side}">
           ${g.serving === side ? `<div class="server-mark">🏸</div>` : ""}
@@ -507,6 +680,7 @@
           <div class="sets">
             ${Array.from({ length: toWin }).map((_, i) => `<span class="dot ${i < sets ? dotClass : ""}"></span>`).join("")}
           </div>
+          ${crowd}
         </button>
       `;
     }
@@ -548,20 +722,72 @@
     function matchOverScreen() {
       const g = state.game;
       const winner = g.lsets > g.rsets ? "left" : "right";
+      const winColor = winner === "left" ? "#60a5fa" : "#fb923c";
       app.innerHTML = `
         <section class="winner">
-          <div class="trophy">🏆</div>
+          ${victorySVG(winColor)}
           <div class="winner-label">比賽結束</div>
-          <div class="winner-name" style="color:${winner === "left" ? "#60a5fa" : "#fb923c"}">${escapeHtml(sideName(winner))}</div>
-          <div>獲勝</div>
+          <div class="winner-name" style="color:${winColor}">${escapeHtml(sideName(winner))}</div>
+          <div style="color:#9db0cb;letter-spacing:2px;font-size:15px">獲勝！</div>
           <div class="winner-score">${g.lsets}：${g.rsets}</div>
           <div class="history">
             ${g.setHistory.map((s, i) => `<div>第 ${i + 1} 局：${s.ls} - ${s.rs}</div>`).join("")}
           </div>
-          ${state.history.length ? `<button class="control" style="width:min(100%,280px)" data-action="undo">復原</button>` : ""}
+          ${state.history.length ? `<button class="control" style="width:min(100%,280px)" data-action="undo">↩ 復原</button>` : ""}
           <button class="start-btn" style="width:min(100%,280px);margin-top:6px" data-action="reset">再來一場</button>
         </section>
       `;
+      setTimeout(startConfetti, 80);
+    }
+
+    function victorySVG(color) {
+      return `<svg class="victory-figure" viewBox="0 0 120 168" width="140" height="185" aria-hidden="true" overflow="visible">
+        <!-- Sparkles around figure -->
+        <g class="vf-spark"><text x="0"  y="38"  font-size="17">✨</text></g>
+        <g class="vf-spark"><text x="98" y="50"  font-size="14">⭐</text></g>
+        <g class="vf-spark"><text x="5"  y="120" font-size="12">✨</text></g>
+
+        <!-- Main body group (bounces) -->
+        <g class="vf-body">
+          <!-- Head (tilted back, roaring to the sky) -->
+          <circle cx="60" cy="26" r="18" fill="none" stroke="${color}" stroke-width="3.5"/>
+          <!-- Eyes – wide open upward gaze -->
+          <circle cx="53" cy="20" r="2.8" fill="${color}"/>
+          <circle cx="67" cy="20" r="2.8" fill="${color}"/>
+          <!-- Wide open mouth – roar! -->
+          <ellipse cx="60" cy="34" rx="7" ry="5" fill="#060e1c" stroke="${color}" stroke-width="2.2"/>
+
+          <!-- Body -->
+          <line x1="60" y1="44" x2="60" y2="110" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>
+
+          <!-- Left arm raised high – fist to the sky -->
+          <g class="vf-arm-l">
+            <line x1="60" y1="64" x2="18" y2="22" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>
+            <g class="vf-fist" style="color:${color}">
+              <rect x="9" y="14" width="14" height="11" rx="4" fill="${color}"/>
+              <!-- Knuckle lines -->
+              <line x1="12" y1="14" x2="12" y2="25" stroke="#060e1c" stroke-width="1.2"/>
+              <line x1="16" y1="14" x2="16" y2="25" stroke="#060e1c" stroke-width="1.2"/>
+              <line x1="20" y1="14" x2="20" y2="25" stroke="#060e1c" stroke-width="1.2"/>
+            </g>
+          </g>
+
+          <!-- Right arm raised high – fist to the sky -->
+          <g class="vf-arm-r">
+            <line x1="60" y1="64" x2="102" y2="22" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>
+            <g class="vf-fist" style="color:${color}">
+              <rect x="97" y="14" width="14" height="11" rx="4" fill="${color}"/>
+              <line x1="100" y1="14" x2="100" y2="25" stroke="#060e1c" stroke-width="1.2"/>
+              <line x1="104" y1="14" x2="104" y2="25" stroke="#060e1c" stroke-width="1.2"/>
+              <line x1="108" y1="14" x2="108" y2="25" stroke="#060e1c" stroke-width="1.2"/>
+            </g>
+          </g>
+
+          <!-- Legs spread wide in triumphant stance -->
+          <line x1="60" y1="110" x2="32" y2="155" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>
+          <line x1="60" y1="110" x2="88" y2="155" stroke="${color}" stroke-width="3.5" stroke-linecap="round"/>
+        </g>
+      </svg>`;
     }
 
     function escapeHtml(value) {
@@ -608,6 +834,58 @@
       if (action === "nextSet") nextSet();
       if (action === "reset") reset();
     });
+
+    /* ─── CONFETTI ENGINE ─── */
+    let confettiRAF = null;
+    function startConfetti() {
+      const canvas = document.getElementById("confetti-canvas");
+      if (!canvas) return;
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const ctx = canvas.getContext("2d");
+      const COLS = ["#3b82f6","#f97316","#34d399","#fbbf24","#e879f9","#f87171","#a78bfa","#fff"];
+      const particles = Array.from({ length: 140 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height * 0.5,
+        w: Math.random() * 11 + 5,
+        h: Math.random() * 6  + 3,
+        color: COLS[Math.floor(Math.random() * COLS.length)],
+        vx: (Math.random() - 0.5) * 3.5,
+        vy: Math.random() * 3.5 + 1.5,
+        rot: Math.random() * 360,
+        spin: (Math.random() - 0.5) * 9,
+        opacity: 1
+      }));
+      let frame = 0;
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        frame++;
+        particles.forEach(p => {
+          p.x   += p.vx;
+          p.y   += p.vy;
+          p.vy  += 0.07;
+          p.rot += p.spin;
+          if (frame > 100) p.opacity -= 0.013;
+          if (p.opacity <= 0) return;
+          ctx.save();
+          ctx.globalAlpha = p.opacity;
+          ctx.translate(p.x + p.w / 2, p.y + p.h / 2);
+          ctx.rotate(p.rot * Math.PI / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        });
+        if (frame < 280) confettiRAF = requestAnimationFrame(draw);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      if (confettiRAF) cancelAnimationFrame(confettiRAF);
+      confettiRAF = requestAnimationFrame(draw);
+    }
+    function stopConfetti() {
+      if (confettiRAF) { cancelAnimationFrame(confettiRAF); confettiRAF = null; }
+      const c = document.getElementById("confetti-canvas");
+      if (c) c.getContext("2d").clearRect(0, 0, c.width, c.height);
+    }
 
     render();
   </script>
