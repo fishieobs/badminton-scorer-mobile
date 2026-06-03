@@ -2,19 +2,23 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#050814">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0f2456">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="羽球計分">
   <title>羽球計分器</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 680 680'%3E%3Crect width='680' height='680' rx='148' fill='%230f2456'/%3E%3Crect x='18' y='18' width='644' height='644' rx='136' fill='none' stroke='rgba(255,255,255,0.07)' stroke-width='24'/%3E%3Cdefs%3E%3CradialGradient id='cg' cx='40%25' cy='35%25' r='60%25'%3E%3Cstop offset='0%25' stop-color='%23fff8e8'/%3E%3Cstop offset='100%25' stop-color='%23c8904a'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg transform='translate(340,360)'%3E%3Cg transform='rotate(0)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-195' stroke='rgba(255,255,255,0.35)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-222' rx='26' ry='40' fill='rgba(255,255,255,0.9)'/%3E%3C/g%3E%3Cg transform='rotate(22.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-190' stroke='rgba(255,255,255,0.33)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-216' rx='25' ry='38' fill='rgba(255,255,255,0.88)'/%3E%3C/g%3E%3Cg transform='rotate(45)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-182' stroke='rgba(255,255,255,0.31)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-207' rx='24' ry='36' fill='rgba(255,255,255,0.85)'/%3E%3C/g%3E%3Cg transform='rotate(67.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-172' stroke='rgba(255,255,255,0.29)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-196' rx='23' ry='34' fill='rgba(255,255,255,0.82)'/%3E%3C/g%3E%3Cg transform='rotate(90)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-168' stroke='rgba(255,255,255,0.28)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-192' rx='22' ry='33' fill='rgba(255,255,255,0.8)'/%3E%3C/g%3E%3Cg transform='rotate(112.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-168' stroke='rgba(255,255,255,0.28)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-192' rx='22' ry='33' fill='rgba(255,255,255,0.8)'/%3E%3C/g%3E%3Cg transform='rotate(135)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-172' stroke='rgba(255,255,255,0.29)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-196' rx='23' ry='34' fill='rgba(255,255,255,0.82)'/%3E%3C/g%3E%3Cg transform='rotate(157.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-182' stroke='rgba(255,255,255,0.31)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-207' rx='24' ry='36' fill='rgba(255,255,255,0.85)'/%3E%3C/g%3E%3Cg transform='rotate(180)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-190' stroke='rgba(255,255,255,0.33)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-216' rx='25' ry='38' fill='rgba(255,255,255,0.88)'/%3E%3C/g%3E%3Cg transform='rotate(202.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-185' stroke='rgba(255,255,255,0.32)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-211' rx='24.5' ry='37' fill='rgba(255,255,255,0.87)'/%3E%3C/g%3E%3Cg transform='rotate(225)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-178' stroke='rgba(255,255,255,0.3)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-202' rx='23.5' ry='35' fill='rgba(255,255,255,0.84)'/%3E%3C/g%3E%3Cg transform='rotate(247.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-170' stroke='rgba(255,255,255,0.28)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-194' rx='22.5' ry='33.5' fill='rgba(255,255,255,0.81)'/%3E%3C/g%3E%3Cg transform='rotate(270)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-168' stroke='rgba(255,255,255,0.28)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-192' rx='22' ry='33' fill='rgba(255,255,255,0.8)'/%3E%3C/g%3E%3Cg transform='rotate(292.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-168' stroke='rgba(255,255,255,0.28)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-192' rx='22' ry='33' fill='rgba(255,255,255,0.8)'/%3E%3C/g%3E%3Cg transform='rotate(315)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-172' stroke='rgba(255,255,255,0.29)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-196' rx='23' ry='34' fill='rgba(255,255,255,0.82)'/%3E%3C/g%3E%3Cg transform='rotate(337.5)'%3E%3Cline x1='0' y1='-62' x2='0' y2='-182' stroke='rgba(255,255,255,0.31)' stroke-width='2.2' stroke-linecap='round'/%3E%3Cellipse cx='0' cy='-207' rx='24' ry='36' fill='rgba(255,255,255,0.85)'/%3E%3C/g%3E%3Ccircle r='222' fill='none' stroke='rgba(255,255,255,0.18)' stroke-width='2' stroke-dasharray='8 6'/%3E%3Ccircle r='62' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2.5'/%3E%3Cellipse cy='55' rx='46' ry='10' fill='rgba(0,0,0,0.25)'/%3E%3Cellipse cy='5' rx='48' ry='52' fill='url(%23cg)'/%3E%3Cellipse cy='-44' rx='28' ry='8' fill='rgba(255,252,240,0.55)'/%3E%3Cellipse cy='-2' rx='32' ry='6' fill='rgba(180,120,50,0.25)'/%3E%3Cline x1='-32' y1='-20' x2='-32' y2='48' stroke='rgba(160,100,40,0.3)' stroke-width='1.5' stroke-linecap='round'/%3E%3Cline x1='-15' y1='-34' x2='-15' y2='54' stroke='rgba(160,100,40,0.25)' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='15' y1='-34' x2='15' y2='54' stroke='rgba(160,100,40,0.25)' stroke-width='1.2' stroke-linecap='round'/%3E%3Cline x1='32' y1='-20' x2='32' y2='48' stroke='rgba(160,100,40,0.3)' stroke-width='1.5' stroke-linecap='round'/%3E%3Cellipse cy='54' rx='46' ry='10' fill='%23b87c30'/%3E%3Cellipse cy='54' rx='40' ry='7' fill='%23d4a060'/%3E%3C/g%3E%3C/svg%3E">
   <style>
     *, *::before, *::after { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { margin: 0; min-height: 100%; background: #050814; color: #fff; }
+    html, body { margin: 0; min-height: 100%; background: #050814; color: #fff; touch-action: manipulation; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       overflow: hidden;
       user-select: none;
       -webkit-user-select: none;
     }
-    button, input { font: inherit; }
+    button, input { font: inherit; touch-action: manipulation; }
     button { cursor: pointer; }
     .app {
       min-height: 100vh;
@@ -30,7 +34,8 @@
       overflow: auto;
     }
     .title { text-align: center; margin: 4px 0 26px; }
-    .title-icon { font-size: 42px; line-height: 1; }
+    .title-icon { line-height: 1; display: flex; justify-content: center; }
+    .title-icon svg { width: 72px; height: 72px; border-radius: 16px; display: block; }
     h1 { margin: 8px 0 0; font-size: 28px; letter-spacing: 4px; }
     .label {
       display: block;
@@ -150,6 +155,7 @@
       color: #fff;
       padding: 14px 8px;
       transition: filter .15s, background .2s;
+      touch-action: manipulation;
     }
     .panel:active { filter: brightness(1.35); }
     .panel.left { background: linear-gradient(158deg, #080d18, #102247); }
@@ -415,6 +421,40 @@
   <canvas id="confetti-canvas"></canvas>
 
   <script>
+    const ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 680" aria-hidden="true">
+      <defs>
+        <linearGradient id="ibg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#0f2456"/><stop offset="100%" stop-color="#1a4fc4"/>
+        </linearGradient>
+        <radialGradient id="icg" cx="40%" cy="35%" r="60%">
+          <stop offset="0%" stop-color="#fff8e8"/><stop offset="100%" stop-color="#c8904a"/>
+        </radialGradient>
+      </defs>
+      <rect width="680" height="680" rx="148" fill="url(#ibg)"/>
+      <rect x="18" y="18" width="644" height="644" rx="136" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="24"/>
+      <g transform="translate(340,360)">
+        ${[0,22.5,45,67.5,90,112.5,135,157.5,180,202.5,225,247.5,270,292.5,315,337.5].map((a,i)=>{
+          const len = 195 - Math.abs(Math.sin((i/16)*Math.PI*2))*27;
+          const ry  = 40  - Math.abs(Math.sin((i/16)*Math.PI*2))*7;
+          return `<g transform="rotate(${a})">
+            <line x1="0" y1="-62" x2="0" y2="${-len}" stroke="rgba(255,255,255,0.33)" stroke-width="2.2" stroke-linecap="round"/>
+            <ellipse cx="0" cy="${-len-27}" rx="${ry*0.65}" ry="${ry}" fill="rgba(255,255,255,0.87)"/>
+          </g>`;
+        }).join("")}
+        <circle r="222" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2" stroke-dasharray="8 6"/>
+        <circle r="62" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2.5"/>
+        <ellipse cy="5" rx="48" ry="52" fill="url(#icg)"/>
+        <ellipse cy="-44" rx="28" ry="8" fill="rgba(255,252,240,0.55)"/>
+        <line x1="-32" y1="-20" x2="-32" y2="48" stroke="rgba(160,100,40,0.30)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="-15" y1="-34" x2="-15" y2="54" stroke="rgba(160,100,40,0.25)" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="15"  y1="-34" x2="15"  y2="54" stroke="rgba(160,100,40,0.25)" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="32"  y1="-20" x2="32"  y2="48" stroke="rgba(160,100,40,0.30)" stroke-width="1.5" stroke-linecap="round"/>
+        <ellipse cy="54" rx="46" ry="10" fill="#b87c30"/>
+        <ellipse cy="54" rx="40" ry="7"  fill="#d4a060"/>
+        <ellipse cy="-44" rx="14" ry="18" fill="rgba(255,252,230,0.38)" transform="translate(-14,0)"/>
+      </g>
+    </svg>`;
+
     const FORMATS = [
       { id: "s15", label: "單局 15 分", sets: 1, points: 15, changeAt: 8 },
       { id: "s21", label: "單局 21 分", sets: 1, points: 21, changeAt: 11 },
@@ -581,7 +621,7 @@
       app.innerHTML = `
         <section class="setup">
           <div class="title">
-            <div class="title-icon">🏸</div>
+            <div class="title-icon">${ICON_SVG}</div>
             <h1>羽球計分器</h1>
           </div>
 
@@ -625,6 +665,9 @@
     function serveScreen() {
       app.innerHTML = `
         <section class="serve-screen">
+          <div style="display:flex;justify-content:center;margin-bottom:14px">
+            <div style="width:56px;height:56px;border-radius:13px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,0.4)">${ICON_SVG}</div>
+          </div>
           <div class="serve-title">選擇先發球方</div>
           <div class="starter-row">
             <button class="starter left" data-serve="left">
@@ -726,7 +769,10 @@
       app.innerHTML = `
         <section class="winner">
           ${victorySVG(winColor)}
-          <div class="winner-label">比賽結束</div>
+          <div style="display:flex;align-items:center;gap:8px;justify-content:center;margin-bottom:4px">
+            <div style="width:32px;height:32px;border-radius:7px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,0.4)">${ICON_SVG}</div>
+            <div class="winner-label" style="margin-bottom:0">比賽結束</div>
+          </div>
           <div class="winner-name" style="color:${winColor}">${escapeHtml(sideName(winner))}</div>
           <div style="color:#9db0cb;letter-spacing:2px;font-size:15px">獲勝！</div>
           <div class="winner-score">${g.lsets}：${g.rsets}</div>
